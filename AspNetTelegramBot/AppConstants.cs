@@ -16,6 +16,5 @@ namespace MarathonBot
         public static string BotWebhook { get; set; }
         public static string SupportUserId { get; set; }
         public static DateTime ShowDate { get; set; }
-
     }
 }

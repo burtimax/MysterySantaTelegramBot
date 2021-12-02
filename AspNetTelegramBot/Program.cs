@@ -20,13 +20,7 @@ namespace AspNetTelegramBot
 
             var host = CreateHostBuilder(args).Build();
             
-            //CreateDatabase and Provide Migrations
-            BotContext botContext = new BotContext();
-            botContext.Database.EnsureCreated();
             
-            SantaContext santaContext = new SantaContext();
-            santaContext.Database.MigrateAsync();
-            //
 
             host.Run();
         }

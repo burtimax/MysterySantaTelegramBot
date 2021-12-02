@@ -2,16 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetTelegramBot.Src.DbModel.DbBot;
 using MarathonBot;
 using MarathonBot.Helpers;
+using MarathonBot.SantaBot.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using SantaBot.DbModel.Context;
 
 namespace AspNetTelegramBot
 {
@@ -43,7 +47,17 @@ namespace AspNetTelegramBot
             logger.LogInformation("DbConnection - " + AppConstants.DbConnection);
             logger.LogInformation("RootDir - " + AppConstants.RootDir);
             logger.LogInformation("WebHook - " + AppConstants.BotWebhook);
+            logger.LogInformation("PhotoPath - " + PhotoHelper.GetPhotoFilePathByUserInfoPhoto("image.jpg"));
 
+            //CreateDatabase and Provide Migrations
+            BotContext botContext = new BotContext();
+            botContext.Database.EnsureCreated();
+            
+            SantaContext santaContext = new SantaContext();
+            santaContext.Database.MigrateAsync();
+            //
+            
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

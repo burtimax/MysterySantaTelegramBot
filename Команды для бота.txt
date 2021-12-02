@@ -8,5 +8,5 @@ nginx -t //Проверить правильность заполнения ко
 docker-compose ps //посмотреть все работающие композы
 chmod //дать доступ к папке.
 docker build //Создать образ из dockerfile
-
+certbot certonly --webroot -w /var/www/letsencrypt/ -d burtimax.xyz
 

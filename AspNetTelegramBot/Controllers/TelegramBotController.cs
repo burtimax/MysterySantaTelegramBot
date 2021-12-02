@@ -100,7 +100,7 @@ namespace AspNetTelegramBot.Controllers
         {
             if (update == null) return Ok();
             
-            _logger.LogInformation($"POST (update) - {DateTime.Now.ToString("G")}");
+            //_logger.LogInformation($"POST (update) - {DateTime.Now.ToString("G")}");
             
             SantaBot.Code.SantaBot bot = await BotSingleton.GetInstanceAsync();
             

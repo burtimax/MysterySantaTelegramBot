@@ -43,8 +43,8 @@ namespace TelegramBotAdditionalTools.Src.MessageData
             {
                 throw new Exception("File data is NULL");
             }
-
-            if (System.IO.Directory.Exists(filePath.Substring(0, filePath.LastIndexOf('\\'))) == false)
+            
+            if (System.IO.Directory.Exists(filePath.Substring(0, filePath.LastIndexOf(Path.DirectorySeparatorChar))) == false)
             {
                 throw new Exception("FIle Directory is NOT EXISTS");
             }

@@ -44,6 +44,7 @@ namespace SantaBot.Data.States.SetPhoto
             var photo = await messageData.GetMessagePhotoAsync(PhotoQuality.High);
 
             var photoPath = PhotoHelper.GetPhotoFilePathForUser(CurrentUser.Id.ToString());
+            
             photo.File.SaveFile(photoPath);
             
             ui.Photo = PhotoHelper.GetPhotoFileNameForUser(CurrentUser.Id.ToString());
