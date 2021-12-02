@@ -1,0 +1,12 @@
+docker system prune --all //удалить все левые контейнеры
+docker-compose logs -ft --tail=100 //Вывести логи контейнера
+docker-compose build //Пересобрать образы для композа
+docker-compose up -d //Собрать композ
+docker-compose down --remove-orphans && docker-compose up -d //Остановить сомпоз и собрать заново по старым образам
+systemctl reload nginx //Обновление конфигурации Nginx
+nginx -t //Проверить правильность заполнения конфигурации
+docker-compose ps //посмотреть все работающие композы
+chmod //дать доступ к папке.
+docker build //Создать образ из dockerfile
+
+
