@@ -134,21 +134,21 @@ namespace AspNetTelegramBot.Src.Bot.Abstract
             return result;
         }
 
-        protected virtual async Task<Hop> TextMessageProcess(Message mes)
+        protected virtual Task<Hop> TextMessageProcess(Message mes)
         {
             return null;
         }
         
-        protected virtual async Task<Hop> PhotoMessageProcess(Message mes)
+        protected virtual Task<Hop> PhotoMessageProcess(Message mes)
         {
             return null;
         }
         
-        protected virtual async Task<Hop> UnexpectedTypeMessageProcess(Message mes)
+        protected virtual Task<Hop> UnexpectedTypeMessageProcess(Message mes)
         {
             var res = defaultHop;
             res.PriorityIntroduction = CurrentState.UnexpectedUpdateTypeAnswer ?? "Не понимаю";
-            return res;
+            return Task.FromResult(res);
         }
         
         protected virtual async Task<Hop> ProcessCallback(CallbackQuery callback)
@@ -157,9 +157,9 @@ namespace AspNetTelegramBot.Src.Bot.Abstract
             return defaultHop;
         }
 
-        protected virtual async Task<Hop> ProcessOtherQuery(Update update)
+        protected virtual Task<Hop> ProcessOtherQuery(Update update)
         {
-            return defaultHop;
+            return Task.FromResult(defaultHop);
         }
 
         

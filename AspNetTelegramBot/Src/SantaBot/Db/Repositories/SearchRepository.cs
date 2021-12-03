@@ -47,16 +47,6 @@ namespace SantaBot.Db.Repositories
                 .OrderBy(item=>item.ShowCount)
                 .ThenBy(item=>Math.Abs(item.UserInfo.Age*10-medianeAgeX10))
                 .ThenBy(item => item.Rand - num).ToListAsync();
-
-         
-
-            foreach (var profile1 in profiles)
-            {
-                if (profile1.UserInfo.Contact != null)
-                {
-                    int t = 1;
-                }
-            }
             
             var profile = profiles.FirstOrDefault();
             if (profile == null && shown == true)

@@ -13,9 +13,9 @@ namespace SantaBot.Data.States._TEMPLATE_
             RequiredMessageType = MessageType.Text;
         }
 
-        protected override async Task<Hop> ProcessMessage(Message mes)
+        protected override Task<Hop> ProcessMessage(Message mes)
         {
-            return successHop;
+            return Task.FromResult(successHop);
         }
 
         protected override Task<Hop> TextMessageProcess(Message mes)

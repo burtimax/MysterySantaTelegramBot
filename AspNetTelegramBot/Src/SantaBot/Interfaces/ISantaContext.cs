@@ -1,5 +1,4 @@
 ﻿using SantaBot.DbModel.Entities;
-using SantaBot.DbModel.Entities;
 using SantaBot.Interfaces.IRepositories;
 using Microsoft.EntityFrameworkCore;
 

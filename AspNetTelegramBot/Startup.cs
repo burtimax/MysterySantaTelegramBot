@@ -50,11 +50,15 @@ namespace AspNetTelegramBot
             logger.LogInformation("PhotoPath - " + PhotoHelper.GetPhotoFilePathByUserInfoPhoto("image.jpg"));
 
             //CreateDatabase and Provide Migrations
-            BotContext botContext = new BotContext();
-            botContext.Database.EnsureCreated();
+            using (BotContext botContext = new BotContext())
+            {
+                botContext.Database.EnsureCreated();
+            }
             
-            SantaContext santaContext = new SantaContext();
-            santaContext.Database.MigrateAsync();
+            using (SantaContext santaContext = new SantaContext())
+            {
+                santaContext.Database.MigrateAsync();
+            }
             //
             
             

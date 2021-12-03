@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using SantaBot.DbModel.Entities;
 using SantaBot.DbModel.Context;
-using SantaBot.DbModel.Entities;
 using SantaBot.Interfaces.IRepositories;
 
 namespace SantaBot.Db.Repositories

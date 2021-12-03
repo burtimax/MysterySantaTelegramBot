@@ -23,8 +23,6 @@ namespace AspNetTelegramBot.Src.Bot.Abstract
         public Code.Bot bot;
         private BotControllerAdditionalMethods additionalMethods;
 
-        private BotUpdateProcessor updateProcessor;
-
         protected BotProcessController(Code.Bot bot)
         {
             this.bot = bot;
@@ -143,7 +141,6 @@ namespace AspNetTelegramBot.Src.Bot.Abstract
                     this.additionalMethods.Db = null;
                 }
             }
-
         }
 
 

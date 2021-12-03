@@ -71,7 +71,7 @@ namespace AspNetTelegramBot.Controllers
             {
                 using (var db = new BotContext())
                 {
-                    if (db.Database.CanConnect())
+                    if (await db.Database.CanConnectAsync())
                     {
                         return Ok("DB TRUE");
                     }
@@ -81,7 +81,7 @@ namespace AspNetTelegramBot.Controllers
                     }
                 }
             }
-            catch (Exception e)
+            catch
             {
                 return Ok("DB ERROR");
             }
@@ -99,9 +99,7 @@ namespace AspNetTelegramBot.Controllers
         public async Task<IActionResult> Post(Telegram.Bot.Types.Update update)
         {
             if (update == null) return Ok();
-            
-            //_logger.LogInformation($"POST (update) - {DateTime.Now.ToString("G")}");
-            
+
             SantaBot.Code.SantaBot bot = await BotSingleton.GetInstanceAsync();
             
             //На каждый запрос создаем отдельный контекст

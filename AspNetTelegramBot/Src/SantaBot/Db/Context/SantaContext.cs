@@ -11,7 +11,6 @@ namespace SantaBot.DbModel.Context
     public class SantaContext : DbContext, ISantaContext
     {
         private string schema = "santa";
-        private string _connection;
 
         // public SantaContext(string connection)
         // {

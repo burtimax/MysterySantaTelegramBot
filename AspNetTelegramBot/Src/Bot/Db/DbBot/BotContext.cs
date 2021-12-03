@@ -10,8 +10,6 @@ namespace AspNetTelegramBot.Src.DbModel.DbBot
 {
     public class BotContext : DbContext
     {
-        // "Server=(localdb)\\mssqllocaldb;Database=MarathonTelegramBot;Trusted_Connection=True;"
-
         private string schema = "bot";
         
         //Lazy load Methods object
@@ -34,15 +32,6 @@ namespace AspNetTelegramBot.Src.DbModel.DbBot
         public DbSet<User> User { get; set; }
         public DbSet<Chat> Chat { get; set; }
         public DbSet<Message> Message { get; set; }
-
-        private string _connection;
-
-        // public BotContext(string connection)
-        // {
-        //     _connection = connection;
-        //     //Database.EnsureCreated();
-        // }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
