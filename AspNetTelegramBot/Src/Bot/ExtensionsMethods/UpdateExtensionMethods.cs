@@ -27,18 +27,33 @@ namespace AspNetTelegramBot.Src.Bot.ExtensionsMethods
 
         public static Chat GetChat(this Update update)
         {
+            Chat chat = null;
             switch (update.Type)
             {
-                case UpdateType.Message:
-                    return update.Message.Chat;
+                case Telegram.Bot.Types.Enums.UpdateType.Message:
+                    chat = update.Message.Chat;
                     break;
-
-                case UpdateType.CallbackQuery:
-                    return update.CallbackQuery.Message.Chat;
+                case UpdateType.ChannelPost:
+                    chat = update.ChannelPost.Chat;
+                    break;
+                case UpdateType.EditedChannelPost:
+                    chat = update.EditedChannelPost.Chat;
+                    break;
+                case UpdateType.EditedMessage:
+                    chat = update.EditedMessage.Chat;
+                    break;
+                case UpdateType.ChatMember:
+                    chat = update.ChatMember.Chat;
+                    break;
+                case UpdateType.MyChatMember:
+                    chat = update.MyChatMember.Chat;
+                    break;
+                case UpdateType.ChatJoinRequest:
+                    chat = update.ChatJoinRequest.Chat;
                     break;
             }
 
-            return null;
+            return chat;
         }
 
         /// <summary>
@@ -48,50 +63,51 @@ namespace AspNetTelegramBot.Src.Bot.ExtensionsMethods
         /// <returns>User object</returns>
         public static User GetUser(this Update update)
         {
+            User user = null;
             switch (update.Type)
             {
                 case Telegram.Bot.Types.Enums.UpdateType.Message:
-                    return update.Message.From;
+                    user = update.Message.From;
                     break;
-
                 case UpdateType.CallbackQuery:
-                    return update.CallbackQuery.From;
+                    user = update.CallbackQuery.From;
                     break;
-
                 case UpdateType.ChosenInlineResult:
-                    return update.ChosenInlineResult.From;
+                    user = update.ChosenInlineResult.From;
                     break;
-
                 case UpdateType.ChannelPost:
-                    return update.ChannelPost.From;
+                    user = update.ChannelPost.From;
                     break;
-
                 case UpdateType.EditedChannelPost:
-                    return update.EditedChannelPost.From;
+                    user = update.EditedChannelPost.From;
                     break;
-
                 case UpdateType.EditedMessage:
-                    return update.EditedMessage.From;
+                    user = update.EditedMessage.From;
                     break;
-
                 case UpdateType.InlineQuery:
-                    return update.InlineQuery.From;
+                    user = update.InlineQuery.From;
                     break;
-
                 case UpdateType.PollAnswer:
-                    return update.PollAnswer.User;
+                    user = update.PollAnswer.User;
                     break;
-
                 case UpdateType.PreCheckoutQuery:
-                    return update.PreCheckoutQuery.From;
+                    user = update.PreCheckoutQuery.From;
                     break;
-
                 case UpdateType.ShippingQuery:
-                    return update.ShippingQuery.From;
+                    user = update.ShippingQuery.From;
+                    break;
+                case UpdateType.ChatMember:
+                    user = update.ChatMember.From;
+                    break;
+                case UpdateType.MyChatMember:
+                    user = update.MyChatMember.From;
+                    break;
+                case UpdateType.ChatJoinRequest:
+                    user = update.ChatJoinRequest.From;
                     break;
             }
 
-            return null;
+            return user;
         }
     }
 }

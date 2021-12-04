@@ -31,5 +31,13 @@
     <ProjectReference Include="..\TelegramBotAdditionalTools\TelegramBotAdditionalTools.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\photo\1069768978.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\photo\1276898311.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\photo\1770925961.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\photo\672312299.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\photo\user.jpg" />
+  </ItemGroup>
+
 
 </Project>

@@ -32,6 +32,8 @@ namespace AspNetTelegramBot
             AppConstants.BotWebhook = Configuration["Bot:Webhook"];
             AppConstants.SupportUserId = Configuration["Bot:SupportUserId"];
             AppConstants.ShowDate = DateTime.ParseExact(Configuration["Constants:ShowDate"], "dd.MM.yyyy", null);
+            AppConstants.MaxBeChosen = int.Parse(Configuration["Constants:MaxBeChosen"]);
+            AppConstants.MaxChoice = int.Parse(Configuration["Constants:MaxChoice"]);
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -47,6 +49,8 @@ namespace AspNetTelegramBot
             logger.LogInformation("DbConnection - " + AppConstants.DbConnection);
             logger.LogInformation("RootDir - " + AppConstants.RootDir);
             logger.LogInformation("WebHook - " + AppConstants.BotWebhook);
+            logger.LogInformation("MaxChoice - " + AppConstants.MaxChoice);
+            logger.LogInformation("MaxBeChosen - " + AppConstants.MaxBeChosen);
             logger.LogInformation("PhotoPath - " + PhotoHelper.GetPhotoFilePathByUserInfoPhoto("image.jpg"));
 
             //CreateDatabase and Provide Migrations
@@ -77,6 +81,10 @@ namespace AspNetTelegramBot
             {
                 endpoints.MapControllers();
             });
+
+            Bootstrap bootstrap = new Bootstrap();
+            bootstrap.InitChosenByOtherCountForUsers().Wait();
+            logger.LogInformation("Bootstrap init");
 
             var bot = BotSingleton.GetInstanceAsync().Result;
             logger.LogInformation("Bot start");

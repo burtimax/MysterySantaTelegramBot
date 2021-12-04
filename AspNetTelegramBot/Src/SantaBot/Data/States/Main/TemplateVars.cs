@@ -7,18 +7,18 @@ namespace SantaBot.Data.States.Search
 {
     public class MainVars
     {
-        public static string Introduction = "Поиск";
+        public static string Introduction = "Смотри другие письма и выбирай кому сделать подарок 🎅";
         public static string Unexpected = "ЧТО#&!?";
         public static string DeletedFromFavouritesSuccessfully = "Удалено из избранных";
         public static string CancelDelete = "Удаление отменено";
         public static string NotProfiles = "Никого не найдено ☹️, попробуй изменить параметры поиска";
-        public static string EmptyFavouritesList = "Список избранных пуст";
+        public static string EmptyFavouritesList = "Список избранных пуст ☹\nВыбери письмо и нажми кнопку [Выбрать], чтобы добавить в избранные.";
         public static string FavouritesList = "Список избранных";
-        public static string YourProfileWasAddedToFavourites = "Твое письмо кто-то добавил в избранное 😘";
+        public static string YourProfileWasAddedToFavourites = "<b>Оповещение</b>\nТвое письмо кто-то добавил в избранное 😘";
         
         public static string BtnSearch = "🎅";
         public static string BtnChosen = "❤️";
-        public static string BtnEditProfile = "✒️✉️";
+        public static string BtnEditProfile = "️✉️";
         public static string BtnEditSearchParams = "🔍";
 
         public static string BtnInlineChoice = "Выбрать";

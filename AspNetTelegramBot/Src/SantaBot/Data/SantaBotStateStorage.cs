@@ -77,7 +77,7 @@ namespace MarathonBot.SantaBot.Data
                 ["ConfirmProfile"] = new BotState()
                 {
                     Name = "ConfirmProfile",
-                    DefaultIntroductionString = SetDescriptionVars.Introduction,
+                    DefaultIntroductionString = ConfirmProfileVars.DefaultIntroduction,
                     DefaultKeyboard = ConfirmProfileVars.DefaultKeyboardMarkup.Value,
                     HopOnSuccess = new HopInfo("SetSearchGender",
                         SetSearchGenderVars.Introduction),
@@ -86,7 +86,7 @@ namespace MarathonBot.SantaBot.Data
                 ["SetSearchGender"] = new BotState()
                 {
                     Name = "SetSearchGender",
-                    DefaultIntroductionString = SetSearchGenderVars.Introduction,
+                    DefaultIntroductionString = SetSearchGenderVars.IntroductionShort,
                     DefaultKeyboard = SetSearchGenderVars.DefaultKeyboardMarkup.Value,
                     HopOnSuccess = new HopInfo("SetSearchAge",
                         SetSearchAgeVars.Introduction),

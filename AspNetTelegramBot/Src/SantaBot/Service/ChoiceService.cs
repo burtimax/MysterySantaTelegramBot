@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using SantaBot.DbModel.Context;
 using SantaBot.DbModel.Entities;
 using SantaBot.Interfaces.IServices;
@@ -8,7 +9,6 @@ namespace MarathonBot.SantaBot.Service
 {
     public class ChoiceService : IChoiceService
     {
-        public const int MAX_CHOSEN_COUNT = 3;
         public const string SUCCESS = "";
         public const string MAX_CHOSEN = "Максимально можно выбрать только 3 человек";
         
@@ -23,13 +23,20 @@ namespace MarathonBot.SantaBot.Service
         {
             var count = await _db.Repos.UserChoice.GetChosenCount(userId);
 
-            if (count > MAX_CHOSEN_COUNT)
+            if (count > AppConstants.MaxChoice)
             {
                 return MAX_CHOSEN;
             }
 
             UserChoice newChoice = new UserChoice(userId, chosenUserId);
             await _db.Repos.UserChoice.AddAsync(newChoice);
+
+            var chosenUserInfo = await _db.Repos.UserInfo.GetByUserId(chosenUserId);
+            if (chosenUserInfo != null)
+            {
+                chosenUserInfo.ChosenByOthersCount += 1;
+                await _db.Repos.UserInfo.UpdateAsync(chosenUserInfo);
+            }
 
             return SUCCESS;
         }
@@ -45,6 +52,14 @@ namespace MarathonBot.SantaBot.Service
 
             choiceItem.SoftDelete = true;
             await _db.Repos.UserChoice.UpdateAsync(choiceItem);
+            
+            var chosenUserInfo = await _db.Repos.UserInfo.GetByUserId(chosenUserId);
+            if (chosenUserInfo != null)
+            {
+                chosenUserInfo.ChosenByOthersCount = Math.Max(chosenUserInfo.ChosenByOthersCount - 1, 0);
+                await _db.Repos.UserInfo.UpdateAsync(chosenUserInfo);
+            }
+            
             return SUCCESS;
         }
     }

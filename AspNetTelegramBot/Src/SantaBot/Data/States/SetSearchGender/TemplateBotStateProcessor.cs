@@ -48,7 +48,7 @@ namespace SantaBot.Data.States.SetSearchGender
                     StateStorage.Get("SetSearchAge"));
                 
                 //Сделаем клавиатуру с выбором прошлых значений для быстроты настроек
-                if (ui.SearchMinAge != 0 || (ui.SearchMaxAge != 100 && ui.SearchMaxAge !=0))
+                if (ui.SearchMinAge != 0 || (ui.SearchMaxAge < 100 && ui.SearchMaxAge !=0))
                 {
                     hop.PriorityKeyboard =
                         SetSearchAgeVars.GetDefaultValueKeyboard(ui.SearchMinAge, ui.SearchMaxAge).Value;

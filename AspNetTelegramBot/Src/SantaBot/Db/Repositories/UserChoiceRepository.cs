@@ -35,5 +35,10 @@ namespace SantaBot.Db.Repositories
 
             return await _db.UsersInfo.Where(ui => chosenIdList.Contains(ui.UserId)).ToListAsync();
         }
+
+        public async Task<bool> IsProfileInMyChoice(long meUserId, long chosenUserId)
+        {
+            return (await _db.UserChoices.CountAsync(c => c.UserId == meUserId && c.ChosenUserId == chosenUserId)) > 0;
+        }
     }
 }

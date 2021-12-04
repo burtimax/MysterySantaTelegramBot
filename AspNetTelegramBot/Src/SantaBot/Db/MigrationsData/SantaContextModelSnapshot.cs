@@ -87,6 +87,9 @@ namespace MarathonBot.Src.SantaBot.Db.MigrationsData
                     b.Property<int>("Age")
                         .HasColumnType("integer");
 
+                    b.Property<int>("ChosenByOthersCount")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Contact")
                         .HasColumnType("text");
 

@@ -32,7 +32,7 @@ namespace MarathonBot.SantaBot.Data.Commands
                 return null;
             }
             
-            await data.bot.SendTextMessageAsync(AppConstants.SupportUserId, messageToAll);
+            await data.bot.SendTextMessageAsync(AppConstants.SupportUserId, messageToAll, ParseMode.Html);
             
             return null;
         }

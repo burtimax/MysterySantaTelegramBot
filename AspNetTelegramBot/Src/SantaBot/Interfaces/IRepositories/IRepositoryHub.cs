@@ -6,5 +6,6 @@
         IUserChoiceRepository UserChoice { get; }
         IShowHistoryRepository ShowHistory { get; }
         ISearchRepository Search { get; }
+        
     }
 }

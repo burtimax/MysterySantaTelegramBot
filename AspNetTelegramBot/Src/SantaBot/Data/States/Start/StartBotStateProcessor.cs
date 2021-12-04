@@ -45,6 +45,7 @@ namespace SantaBot.Data.States.Start
                 Contact = username,
                 UserId = CurrentUser.Id,
                 RandomNumber = r.Next(10000),
+                SearchMaxAge = 101,
             };
             await _dbSanta.Repos.UserInfo.AddAsync(newUserInfo);
         }

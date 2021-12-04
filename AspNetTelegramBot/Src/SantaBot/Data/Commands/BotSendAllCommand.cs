@@ -36,7 +36,7 @@ namespace MarathonBot.SantaBot.Data.Commands
 
             foreach (var chatId in allUsersChatIdList)
             {
-                await data.bot.SendTextMessageAsync(chatId, messageToAll);
+                await data.bot.SendTextMessageAsync(chatId, messageToAll, ParseMode.Html);
             }
             
             return null;

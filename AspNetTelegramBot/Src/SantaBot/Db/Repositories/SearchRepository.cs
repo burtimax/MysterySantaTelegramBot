@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using MarathonBot;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
@@ -29,8 +30,7 @@ namespace SantaBot.Db.Repositories
             bool? isMale = paramsSearch.SearchMale;
             int outBoundAgeMax = 0;
             int num = DateTime.Now.Millisecond * 10;
-            
-                
+
             var profiles = await (from ui in _db.UsersInfo
                     select new 
                     {
@@ -38,6 +38,7 @@ namespace SantaBot.Db.Repositories
                         ShowCount = _db.ShowHistory.Where(s=>s.ShownUserId == ui.UserId && s.UserId == paramsSearch.UserId).Select(s=>s.ShowCount).FirstOrDefault(),
                         Rand = ui.RandomNumber,
                     }).Where(item =>
+                    (item.UserInfo.ChosenByOthersCount < AppConstants.MaxBeChosen) &&
                     (item.UserInfo.Photo != null) &&
                     (item.UserInfo.UserId != paramsSearch.UserId) &&
                     ((item.ShowCount > 0 && shown) || ((item.ShowCount==null || item.ShowCount == 0) && !shown)) &&

@@ -9,6 +9,7 @@ using BotLibrary.Classes.Helpers;
 using MarathonBot;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types;
@@ -48,24 +49,31 @@ namespace AspNetTelegramBot.Src.Bot.Abstract
                 User telegramUser = update.GetUser();
                 Chat telegramChat = update.GetChat();
 
+                //
+                if (update == null)
+                {
+                    throw new Exception($"Update is NULL\n{JsonConvert.SerializeObject(update)}");
+                }
+                
+                if (telegramUser == null)
+                {
+                    throw new Exception($"TelegramUser is NULL\n{JsonConvert.SerializeObject(update)}");
+                }
+                
+                if (telegramChat == null)
+                {
+                    throw new Exception($"TelegramChat is NULL\n{JsonConvert.SerializeObject(update)}");
+                }
+
                 await AddUserIfNeed(telegramUser);
                 await AddChatIfNeed(telegramChat);
                 await SaveMessageIfNeed(update);
                 
-                //Это мой костыль (нужен пока здесь) //ToDo потом убрать
-                #region Костыль
-                var user = await dbBotContext.User.FirstOrDefaultAsync(u => u.Id == telegramUser.Id);
-                if (user != null)
-                {
-                    user.Username = telegramUser.Username;
-                    dbBotContext.User.Update(user);
-                    await dbBotContext.SaveChangesAsync();
-                }
-                #endregion
-
+                
                 //Get Chat model from DataBase to process Update
                 DbModels.Chat chatModel = await additionalMethods.GetChat(telegramChat.Id);
-                var curState = bot.StateStorage.Get(chatModel.GetCurrentStateName());
+                DbModels.User userModel = await additionalMethods.GetUser(telegramUser.Id);
+                BotState curState = bot.StateStorage.Get(chatModel.GetCurrentStateName());
                 string curStateName = curState.ClassName;
                 //---Process Update---
                 //Find BotStateProcessor Class
@@ -81,9 +89,19 @@ namespace AspNetTelegramBot.Src.Bot.Abstract
                     commandStorage = bot.CommandStorage,
                     state = curState,
                     update = update,
-                    chat = await additionalMethods.GetChat(telegramChat.Id),
-                    user = await additionalMethods.GetUser(telegramUser.Id)
+                    chat = chatModel,
+                    user = userModel
                 };
+                
+                //Это мой костыль (нужен пока здесь) //ToDo потом убрать
+                #region Костыль
+                if (userModel != null)
+                {
+                    userModel.Username = telegramUser?.Username;
+                    dbBotContext.User.Update(userModel);
+                    await dbBotContext.SaveChangesAsync();
+                }
+                #endregion
 
                 //Create Instance of Found BotStateProcessorClass
                 var processor = Activator.CreateInstance(processorType, data);
@@ -128,9 +146,7 @@ namespace AspNetTelegramBot.Src.Bot.Abstract
                 await bot.client.SendTextMessageAsync(new ChatId(AppConstants.SupportUserId), $"<b>ERROR</b>\n\n" +
                                                                        $"<b>MESSAGE</b>\n{exception.Message}\n\n" +
                                                                        $"<b>STACK TRACE</b>{exception.StackTrace}\n\n",
-                    ParseMode.Html);
-                //in case of exception not save changes
-                this.additionalMethods.Db = null;
+                                                                        ParseMode.Html);
             }
             finally
             {
@@ -138,11 +154,9 @@ namespace AspNetTelegramBot.Src.Bot.Abstract
                 if(this.additionalMethods.Db != null)
                 {
                     await this.additionalMethods.Db.SaveChangesAsync();
-                    this.additionalMethods.Db = null;
                 }
             }
         }
-
 
         private async Task AddUserIfNeed(User user)
         {

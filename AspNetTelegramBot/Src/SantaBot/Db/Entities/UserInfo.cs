@@ -15,6 +15,8 @@ namespace SantaBot.DbModel.Entities
         public bool IsMale { get; set; }
         public string Photo { get; set; }
         
+        public int ChosenByOthersCount { get; set; }
+        
         /// <summary>
         /// true - male, false - female, null - no matter
         /// </summary>

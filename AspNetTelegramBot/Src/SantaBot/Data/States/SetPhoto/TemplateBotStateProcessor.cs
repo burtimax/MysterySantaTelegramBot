@@ -49,9 +49,20 @@ namespace SantaBot.Data.States.SetPhoto
             
             ui.Photo = PhotoHelper.GetPhotoFileNameForUser(CurrentUser.Id.ToString());
             await _dbSanta.Repos.UserInfo.UpdateAsync(ui);
-            
 
-            var hop = successHop;
+            //Переходим в состояние написание письма
+            var hop = new Hop(new HopInfo("SetDescription", SetDescriptionVars.Introduction, HopType.CurrentLevelHop),
+                CurrentState,
+                StateStorage.Get("SetDescription"));
+            
+            if (ui.IsMale)
+            {
+                hop.PriorityIntroduction = SetDescriptionVars.IntroductionMale;
+            }
+            else
+            {
+                hop.PriorityIntroduction = SetDescriptionVars.IntroductionFemale;
+            }
             if (ui.Description != null)
             {
                 hop.PriorityKeyboard = SetDescriptionVars.GetDefaultValueKeyboard().Value;

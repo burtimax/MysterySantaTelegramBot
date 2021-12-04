@@ -56,13 +56,11 @@ namespace SantaBot.Data.States.Main
             if (text == MainVars.BtnEditProfile)
             {
                 //Перейти в состояние SetName
-                var hop =  new Hop(new HopInfo("SetName", SetNameVars.Introduction, HopType.CurrentLevelHop), 
+                ProfileService profileService = new ProfileService();
+                await profileService.SendProfile(Bot, Chat.Id, myInfo);
+                var hop = new Hop(new HopInfo("ConfirmProfile", ConfirmProfileVars.Introduction, HopType.CurrentLevelHop), 
                     CurrentState, 
-                    StateStorage.Get("SetName"));
-                if(myInfo.Name != null)
-                {
-                    hop.PriorityKeyboard = SetNameVars.GetDefaultValueKeyboard(myInfo.Name).Value;
-                }
+                    StateStorage.Get("ConfirmProfile"));
 
                 return hop;
             }
@@ -154,7 +152,8 @@ namespace SantaBot.Data.States.Main
                 return hopdef;
             }
 
-            await profileService.SendProfile(Bot, chatId, profileInfo, true);
+            bool isProfileInChosen = await _dbSanta.Repos.UserChoice.IsProfileInMyChoice(myInfo.UserId, profileInfo.UserId);
+            await profileService.SendProfile(Bot, chatId, profileInfo, true, isProfileInChosen);
             
             var hop = defaultHop;
             hop.BlockSendAnswer = true;
@@ -172,7 +171,7 @@ namespace SantaBot.Data.States.Main
                 await Bot.EditMessageReplyMarkupAsync(new ChatId(Chat.Id), callback.Message.MessageId,
                     (InlineKeyboardMarkup) MainVars.InlineMarkUpDeleteProfile(chosenUserId).Value);
                 //Отправить уведомление пользователю, которого выбрали
-                await Bot.SendTextMessageAsync(chosenUserId, MainVars.YourProfileWasAddedToFavourites);
+                await Bot.SendTextMessageAsync(chosenUserId, MainVars.YourProfileWasAddedToFavourites, ParseMode.Html);
             }
             else
             {

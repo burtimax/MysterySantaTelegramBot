@@ -11,5 +11,7 @@ namespace SantaBot.Interfaces.IRepositories
         Task<UserChoice> GetUserChoice(long userId, long chosenUserId);
 
         Task<List<UserInfo>> GetFavouritesProfiles(long userId);
+
+        Task<bool> IsProfileInMyChoice(long meUserId, long chosenUserId);
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AspNetTelegramBot.Src.Bot.Abstract;
 using AspNetTelegramBot.Src.Bot.Code;
+using AspNetTelegramBot.Src.Bot.ExtensionsMethods;
 using AspNetTelegramBot.Src.DbModel.DbBot;
 using MarathonBot;
 using MarathonBot.Helpers;
@@ -49,18 +50,18 @@ namespace AspNetTelegramBot.Controllers
         }
         
         [HttpGet("bot")]
-        public async Task<ActionResult> GetBot()
+        public async Task<IActionResult> GetBot()
         {
             _logger.LogInformation($"GET /bot - {DateTime.Now.ToString("G")}");
             //Get Bot client
-            return Ok("BOT INDEX PAGE");
+            return await Task.FromResult<IActionResult>(Ok("BOT INDEX PAGE"));
         }
 
         [HttpGet("test")]
-        public async Task<ActionResult> Test()
+        public async Task<IActionResult> Test()
         {
             _logger.LogInformation($"GET /test - {DateTime.Now.ToString("G")}");
-            return Ok("TEST PAGE");
+            return await Task.FromResult<IActionResult>(Ok("TEST PAGE"));
         }
 
         [HttpGet("db")]
@@ -101,14 +102,19 @@ namespace AspNetTelegramBot.Controllers
             if (update == null) return Ok();
 
             SantaBot.Code.SantaBot bot = await BotSingleton.GetInstanceAsync();
-            
-            //На каждый запрос создаем отдельный контекст
-            using (var botContext = new BotContext())
+
+            if (update.IsAllowableUpdate())
             {
-                bot.BotDbContext = botContext;
-                await Controller.ProcessUpdate(bot.client, update);
+                //На каждый запрос создаем отдельный контекст
+                using (var botContext = new BotContext())
+                {
+                    bot.BotDbContext = botContext;
+
+                    await Controller.ProcessUpdate(bot.client, update);
+                
+                }
             }
-            
+
             //Собираем мусор
             GC.Collect();
             return Ok();
