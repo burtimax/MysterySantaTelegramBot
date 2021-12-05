@@ -30,8 +30,11 @@ namespace AspNetTelegramBot.Src.Bot.ExtensionsMethods
             Chat chat = null;
             switch (update.Type)
             {
-                case Telegram.Bot.Types.Enums.UpdateType.Message:
+                case UpdateType.Message:
                     chat = update.Message.Chat;
+                    break;
+                case UpdateType.CallbackQuery:
+                    chat = update.CallbackQuery.Message.Chat;
                     break;
                 case UpdateType.ChannelPost:
                     chat = update.ChannelPost.Chat;

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using AspNetTelegramBot.Src.Bot.Code;
+using AspNetTelegramBot.Src.Bot.DbModel.DbMethods;
 using AspNetTelegramBot.Src.Bot.ExtensionsMethods;
 using BotLibrary.Classes.Helpers;
 using MarathonBot;
@@ -22,29 +23,26 @@ namespace AspNetTelegramBot.Src.Bot.Abstract
     public abstract class BotProcessController
     {
         public Code.Bot bot;
-        private BotControllerAdditionalMethods additionalMethods;
+        private BotContextDbMethods dbMethods;
 
         protected BotProcessController(Code.Bot bot)
         {
+            this.dbMethods = new BotContextDbMethods();
             this.bot = bot;
-            this.additionalMethods = new BotControllerAdditionalMethods();
+         
         }
 
-        protected BotProcessController(Code.Bot bot, BotControllerAdditionalMethods additionalMethods):this(bot)
+        protected BotProcessController(Code.Bot bot, BotContextDbMethods additionalMethods):this(bot)
         {
-            this.additionalMethods = additionalMethods;
+           
         }
 
         
 
-        public virtual async Task ProcessUpdate(object sender, Update update)
+        public virtual async Task ProcessUpdate(DbModels.BotContext botDbContext, object sender, Update update)
         {
             try
             {
-                //Create BotContext concrete object
-                DbModels.BotContext dbBotContext = bot.GetNewBotContext();
-                this.additionalMethods.Db = dbBotContext;
-
                 //Get objects from Update
                 User telegramUser = update.GetUser();
                 Chat telegramChat = update.GetChat();
@@ -65,14 +63,14 @@ namespace AspNetTelegramBot.Src.Bot.Abstract
                     throw new Exception($"TelegramChat is NULL\n{JsonConvert.SerializeObject(update)}");
                 }
 
-                await AddUserIfNeed(telegramUser);
-                await AddChatIfNeed(telegramChat);
-                await SaveMessageIfNeed(update);
+                await AddUserIfNeed(botDbContext, telegramUser);
+                await AddChatIfNeed(botDbContext, telegramChat);
+                await SaveMessageIfNeed(botDbContext, update);
                 
                 
                 //Get Chat model from DataBase to process Update
-                DbModels.Chat chatModel = await additionalMethods.GetChat(telegramChat.Id);
-                DbModels.User userModel = await additionalMethods.GetUser(telegramUser.Id);
+                DbModels.Chat chatModel = await dbMethods.GetChat(botDbContext, telegramChat.Id);
+                DbModels.User userModel = await dbMethods.GetUser(botDbContext, telegramUser.Id);
                 BotState curState = bot.StateStorage.Get(chatModel.GetCurrentStateName());
                 string curStateName = curState.ClassName;
                 //---Process Update---
@@ -84,7 +82,7 @@ namespace AspNetTelegramBot.Src.Bot.Abstract
                 UpdateBotModel data = new UpdateBotModel()
                 {
                     bot = this.bot.client,
-                    dbBot = dbBotContext,
+                    dbBot = botDbContext,
                     stateStorage = bot.StateStorage,
                     commandStorage = bot.CommandStorage,
                     state = curState,
@@ -98,8 +96,8 @@ namespace AspNetTelegramBot.Src.Bot.Abstract
                 if (userModel != null)
                 {
                     userModel.Username = telegramUser?.Username;
-                    dbBotContext.User.Update(userModel);
-                    await dbBotContext.SaveChangesAsync();
+                    botDbContext.User.Update(userModel);
+                    await botDbContext.SaveChangesAsync();
                 }
                 #endregion
 
@@ -125,7 +123,7 @@ namespace AspNetTelegramBot.Src.Bot.Abstract
                     State= chatModel.State,
                     StateData = hop.PriorityData != null ? hop.PriorityData : chatModel.StateData,
                 };
-                await additionalMethods.SetChatData(c);
+                await dbMethods.SetChatData(botDbContext, c);
 
                 if (hop.BlockSendAnswer == false)
                 {
@@ -151,40 +149,40 @@ namespace AspNetTelegramBot.Src.Bot.Abstract
             finally
             {
                 //if wasn't exception save changes
-                if(this.additionalMethods.Db != null)
+                if(botDbContext != null)
                 {
-                    await this.additionalMethods.Db.SaveChangesAsync();
+                    await botDbContext.SaveChangesAsync();
                 }
             }
         }
 
-        private async Task AddUserIfNeed(User user)
+        private async Task AddUserIfNeed(DbModels.BotContext db, User user)
         {
             if (user == null) throw new Exception("User is NULL");
 
-            if (await additionalMethods.IsUserInBot(user.Id) == false)
+            if (await dbMethods.IsUserInBot(db, user.Id) == false)
             {
-                await additionalMethods.AddUserToBot(user);
+                await dbMethods.AddUserToBot(db, user);
             }
         }
 
-        private async Task AddChatIfNeed(Chat chat)
+        private async Task AddChatIfNeed(DbModels.BotContext db, Chat chat)
         {
             if (chat == null) throw new Exception("Chat is NULL");
 
-            if (await additionalMethods.IsChatInBot(chat.Id) == false)
+            if (await dbMethods.IsChatInBot(db, chat.Id) == false)
             {
-                await additionalMethods.AddChatToBot(chat);
+                await dbMethods.AddChatToBot(db, chat);
             }
         }
 
-        private async Task SaveMessageIfNeed(Update update)
+        private async Task SaveMessageIfNeed(DbModels.BotContext db, Update update)
         {
             if (update == null) return;
 
             if (update.Type == UpdateType.Message)
             {
-                await additionalMethods.SaveMessage(update.Message);
+                await dbMethods.SaveMessage(db, update.Message);
             }
         }
     }

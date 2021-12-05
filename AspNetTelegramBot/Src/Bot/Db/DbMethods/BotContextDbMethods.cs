@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetTelegramBot.Src.Bot.Abstract;
 using AspNetTelegramBot.Src.DbModel.DbBot;
 using Microsoft.EntityFrameworkCore;
 using Telegram.Bot.Types.Enums;
@@ -9,26 +10,26 @@ using Telegram.Bot.Types.Enums;
 
 namespace AspNetTelegramBot.Src.Bot.DbModel.DbMethods
 {
-    public class BotContextDbMethods : IBotContextDbMethods
+    public class BotContextDbMethods : IBotControllerAdditionalMethods
     {
-        private BotContext db;
+        
 
-        public BotContextDbMethods(BotContext db)
+        public BotContextDbMethods()
         {
-            this.db = db;
+           
         }
 
-        public async Task<bool> IsUserInBot(long userId)
+        public async Task<bool> IsUserInBot(BotContext db, long userId)
         {
             return (await db.User.FirstOrDefaultAsync(u => u.Id == userId)) != null;
         }
 
-        public async Task<bool> IsChatInBot(long chatId)
+        public async Task<bool> IsChatInBot(BotContext db, long chatId)
         {
             return (await db.Chat.FirstOrDefaultAsync(ch=>ch.Id == chatId) != null);
         }
 
-        public async Task AddUserToBot(Telegram.Bot.Types.User user)
+        public async Task AddUserToBot(BotContext db, Telegram.Bot.Types.User user)
         {
             User u = new User()
             {
@@ -44,7 +45,7 @@ namespace AspNetTelegramBot.Src.Bot.DbModel.DbMethods
             await db.SaveChangesAsync();
         }
 
-        public async Task AddChatToBot(Telegram.Bot.Types.Chat chat)
+        public async Task AddChatToBot(BotContext db, Telegram.Bot.Types.Chat chat)
         {
             Chat c = new Chat()
             {
@@ -56,7 +57,7 @@ namespace AspNetTelegramBot.Src.Bot.DbModel.DbMethods
             await db.SaveChangesAsync();
         }
 
-        public async Task SaveMessage(Telegram.Bot.Types.Message mes)
+        public async Task SaveMessage(BotContext db, Telegram.Bot.Types.Message mes)
         {
             //save only text messages;
 
@@ -74,19 +75,19 @@ namespace AspNetTelegramBot.Src.Bot.DbModel.DbMethods
 
         }
 
-        public async Task<User> GetUser(long userId)
+        public async Task<User> GetUser(BotContext db, long userId)
         {
             return await db.User.FirstOrDefaultAsync(u => u.Id == userId);
         }
 
-        public async Task<Chat> GetChat(long chatId)
+        public async Task<Chat> GetChat(BotContext db, long chatId)
         {
             return await db.Chat.FirstOrDefaultAsync(ch => ch.Id == chatId);
         }
 
-        public async Task SetChatData(Chat chat)
+        public async Task SetChatData(BotContext db, Chat chat)
         {
-            Chat c = await db.Methods.GetChat(chat.Id);
+            Chat c = await GetChat(db, chat.Id);
             c.State = chat.State;
             c.StateData = chat.StateData;
             await db.SaveChangesAsync();

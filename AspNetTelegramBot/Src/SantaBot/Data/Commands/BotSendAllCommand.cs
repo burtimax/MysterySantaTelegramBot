@@ -36,7 +36,16 @@ namespace MarathonBot.SantaBot.Data.Commands
 
             foreach (var chatId in allUsersChatIdList)
             {
-                await data.bot.SendTextMessageAsync(chatId, messageToAll, ParseMode.Html);
+                //Обернем, потому что если пользователь удалил бота, выкинет ошибку
+                try
+                {
+                    await data.bot.SendTextMessageAsync(chatId, messageToAll, ParseMode.Html);
+                }
+                catch
+                {
+                    
+                }
+                
             }
             
             return null;

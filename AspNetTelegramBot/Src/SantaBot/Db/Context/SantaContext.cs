@@ -1,4 +1,5 @@
-﻿using AspNetTelegramBot.Src.DbModel.DbBot;
+﻿using System;
+using AspNetTelegramBot.Src.DbModel.DbBot;
 using MarathonBot;
 using SantaBot.DbModel.Entities;
 using SantaBot.Db.Repositories;
@@ -45,7 +46,12 @@ namespace SantaBot.DbModel.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //optionsBuilder.UseSqlServer(AppConstants.DbConnection); //for MS SQL SERVER
-            optionsBuilder.UseNpgsql(AppConstants.DbConnection); //For Postgres
+            optionsBuilder.UseNpgsql(AppConstants.DbConnection,
+                options =>
+                {
+                    options.EnableRetryOnFailure(3, TimeSpan.FromSeconds(3),null);
+                    options.CommandTimeout(5);
+                }); //For Postgres
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

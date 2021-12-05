@@ -171,7 +171,16 @@ namespace SantaBot.Data.States.Main
                 await Bot.EditMessageReplyMarkupAsync(new ChatId(Chat.Id), callback.Message.MessageId,
                     (InlineKeyboardMarkup) MainVars.InlineMarkUpDeleteProfile(chosenUserId).Value);
                 //Отправить уведомление пользователю, которого выбрали
-                await Bot.SendTextMessageAsync(chosenUserId, MainVars.YourProfileWasAddedToFavourites, ParseMode.Html);
+                //Обернем в Catch, потому что выскакивает ошибка если бот был заблокирован пользователем
+                try
+                {
+                    await Bot.SendTextMessageAsync(chosenUserId, MainVars.YourProfileWasAddedToFavourites, ParseMode.Html);
+                }
+                catch
+                {
+                    
+                }
+                
             }
             else
             {

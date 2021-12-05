@@ -24,7 +24,6 @@ namespace AspNetTelegramBot.Src.Bot.Abstract
         public event EndUpdate OnEndProcessUpdate;
 
         private UpdateBotModel _updateData;
-        protected BotContext DbBot { get; private set; }
         protected TelegramBotClient Bot { get; private set; }
         protected Chat Chat { get; private set; }
         protected User CurrentUser { get; private set; }
@@ -63,7 +62,6 @@ namespace AspNetTelegramBot.Src.Bot.Abstract
         public BotUpdateProcessor(UpdateBotModel dataForProcessing)
         {
             _updateData = dataForProcessing;
-            this.DbBot = dataForProcessing.dbBot;
             this.Bot = dataForProcessing.bot;
             this.Chat = dataForProcessing.chat;
             this.CurrentUser = dataForProcessing.user;

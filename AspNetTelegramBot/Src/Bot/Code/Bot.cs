@@ -25,13 +25,8 @@ namespace AspNetTelegramBot.Src.Bot.Code
         public TelegramBotClient client { get; set; }
         public BotStateStorage StateStorage { get; set; }
         public BotCommandStorage CommandStorage { get; set; }
-        
-        public BotContext BotDbContext { get; set; }
 
-        public BotContext GetNewBotContext()
-        {
-            return BotDbContext;
-        }
+        
 
 
     }

@@ -108,9 +108,7 @@ namespace AspNetTelegramBot.Controllers
                 //На каждый запрос создаем отдельный контекст
                 using (var botContext = new BotContext())
                 {
-                    bot.BotDbContext = botContext;
-
-                    await Controller.ProcessUpdate(bot.client, update);
+                    await Controller.ProcessUpdate(botContext, bot.client, update);
                 
                 }
             }

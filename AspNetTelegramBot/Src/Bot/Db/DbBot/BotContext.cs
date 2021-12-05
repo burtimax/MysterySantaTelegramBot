@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetTelegramBot.Src.Bot.Abstract;
 using AspNetTelegramBot.Src.Bot.DbModel.DbMethods;
 using MarathonBot;
 using Microsoft.EntityFrameworkCore;
@@ -12,22 +13,12 @@ namespace AspNetTelegramBot.Src.DbModel.DbBot
     {
         private string schema = "bot";
         
-        //Lazy load Methods object
-        public IBotContextDbMethods _methods;
-        public IBotContextDbMethods Methods
+        
+
+        public BotContext()
         {
-            get
-            {
-                if (this._methods == null)
-                {
-                    this._methods = new BotContextDbMethods(this);
-                }
-
-                return this._methods;
-            }
-            private set { this._methods = value; }
+            
         }
-
 
         public DbSet<User> User { get; set; }
         public DbSet<Chat> Chat { get; set; }
@@ -50,7 +41,11 @@ namespace AspNetTelegramBot.Src.DbModel.DbBot
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //optionsBuilder.UseSqlServer(_connection
-            optionsBuilder.UseNpgsql(AppConstants.DbConnection);
+            optionsBuilder.UseNpgsql(AppConstants.DbConnection, options =>
+            {
+                options.EnableRetryOnFailure(3, TimeSpan.FromSeconds(3),null);
+                options.CommandTimeout(5);
+            }); //For Postgres);
         }
     }
 }

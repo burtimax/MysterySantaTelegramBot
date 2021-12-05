@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
 using AspNetTelegramBot.Src.Bot.Abstract;
 using AspNetTelegramBot.Src.Bot.Code;
+using AspNetTelegramBot.Src.Bot.DbModel.DbMethods;
+using AspNetTelegramBot.Src.DbModel.DbBot;
 using Telegram.Bot.Types;
 
 namespace MarathonBot.SantaBot.Code
@@ -11,14 +13,14 @@ namespace MarathonBot.SantaBot.Code
         {
         }
 
-        public SantaBotProcessController(Bot bot, BotControllerAdditionalMethods additionalMethods) : base(bot, additionalMethods)
+        public SantaBotProcessController(Bot bot, BotContextDbMethods additionalMethods) : base(bot, additionalMethods)
         {
         }
 
-        public override Task ProcessUpdate(object sender, Update update)
+        public override Task ProcessUpdate(BotContext botContext, object sender, Update update)
         {
             //My Work
-            return base.ProcessUpdate(sender, update);
+            return base.ProcessUpdate(botContext, sender, update);
         }
     }
 }
