@@ -28,7 +28,7 @@ namespace MarathonBot.SantaBot.Data.Commands
             using (SantaContext _db = new SantaContext())
             {
                 var r = DateTime.Now.Millisecond * 10;
-                List<UserInfo> users = await _db.UsersInfo.Where(ui=>ui.UserId != AppConstants.SupportUserIdLong).OrderBy(u=>r-u.RandomNumber).ToListAsync();
+                List<UserInfo> users = await _db.UsersInfo.Where(ui=>ui.Photo != null && ui.UserId != AppConstants.SupportUserIdLong).OrderBy(u=>r-u.RandomNumber).ToListAsync();
 
                 if (users == null || users.Count == 0)
                 {
