@@ -51,6 +51,13 @@ namespace SantaBot.Db.Repositories
                 .ThenBy(item => item.Rand - num).ToListAsync();
             
             var profile = profiles.FirstOrDefault();
+
+            if (profile != null && profile?.ShowCount > 0)
+            {
+                Random r = new Random(DateTime.Now.Millisecond);
+                profile = profiles.ElementAt(r.Next(profiles.Count));
+            }
+            
             if (profile == null && shown == true)
             {
                 var another = await _db.UsersInfo.Where(ui => ui.IsMale == isMale && (ui.UserId != AppConstants.SupportUserIdLong))
