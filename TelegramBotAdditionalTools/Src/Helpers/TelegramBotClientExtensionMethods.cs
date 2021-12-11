@@ -48,7 +48,7 @@ namespace BotLibrary.Classes.Helpers
                         chatId: chatId, 
                         text: (string) message.Data, 
                         replyMarkup:message.ReplyMarkup,
-                        parseMode: message.ParseMode,
+                        parseMode: /*message.ParseMode,*/ ParseMode.Html,
                         replyToMessageId: message.ReplyToMessageId);
                     break;
 

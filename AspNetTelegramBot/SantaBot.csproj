@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <Folder Include="Src\Bot\Db\MigrationsData" />
-    <Folder Include="Src\SantaBot\Data\Other" />
     <Folder Include="Src\SantaBot\Db\MigrationsData" />
     <Folder Include="wwwroot\__temp__\" />
     <Folder Include="wwwroot\src\documents\" />

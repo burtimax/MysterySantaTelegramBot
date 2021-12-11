@@ -65,13 +65,13 @@ namespace SantaBot.Data.States.Main
                 return hop;
             }
             
-            if (text == MainVars.BtnEditSearchParams)
-            {
-                //Перейти в состояние настроек поиска.
-                return new Hop(new HopInfo("SetSearchGender", SetSearchGenderVars.IntroductionShort, HopType.CurrentLevelHop), 
-                    CurrentState, 
-                    StateStorage.Get("SetSearchGender"));
-            }
+            // if (text == MainVars.BtnEditSearchParams)
+            // {
+            //     //Перейти в состояние настроек поиска.
+            //     return new Hop(new HopInfo("SetSearchGender", SetSearchGenderVars.IntroductionShort, HopType.CurrentLevelHop), 
+            //         CurrentState, 
+            //         StateStorage.Get("SetSearchGender"));
+            // }
 
             return defaultHop;
         }
@@ -87,21 +87,21 @@ namespace SantaBot.Data.States.Main
             }
             
             //Нажал на кнопку Выбрать
-            if (data.StartsWith(MainVars.ChoseInlineDataPrefix))
-            {
-                var userIdStr = data.Replace(MainVars.ChoseInlineDataPrefix, "");
-                long chosenUserId = long.Parse(userIdStr);
-                return await AddProfileToChosen(callback, chosenUserId);
-            }
+            // if (data.StartsWith(MainVars.ChoseInlineDataPrefix))
+            // {
+            //     var userIdStr = data.Replace(MainVars.ChoseInlineDataPrefix, "");
+            //     long chosenUserId = long.Parse(userIdStr);
+            //     return await AddProfileToChosen(callback, chosenUserId);
+            // }
             
             
             //Нажал на кнопку Удалить
-            if (data.StartsWith(MainVars.DeleteInlineDataPrefix))
-            {
-                var userIdStr = data.Replace(MainVars.DeleteInlineDataPrefix, "");
-                long chosenUserId = long.Parse(userIdStr);
-                return await DeleteProfileFromChosen(callback, chosenUserId);
-            }
+            // if (data.StartsWith(MainVars.DeleteInlineDataPrefix))
+            // {
+            //     var userIdStr = data.Replace(MainVars.DeleteInlineDataPrefix, "");
+            //     long chosenUserId = long.Parse(userIdStr);
+            //     return await DeleteProfileFromChosen(callback, chosenUserId);
+            // }
             
             // //Нажал на кнопку Удалить с подтверждением
             // if (data.StartsWith(MainVars.DeleteWithConfirmInlineDataPrefix))
@@ -141,8 +141,8 @@ namespace SantaBot.Data.States.Main
 
         private async Task<Hop> ShowProfile(UserInfo myInfo, long chatId, bool isDeleteButton = false)
         {
-            var profileService = new ProfileService();
-            var profileInfo = await profileService.GetRandomProfileForMe(_dbSanta, myInfo);
+            ProfileService profileService = new ProfileService();
+            UserInfo profileInfo = await profileService.GetRandomProfileForMe(_dbSanta, myInfo);
 
             if (profileInfo == null)
             {
@@ -152,8 +152,8 @@ namespace SantaBot.Data.States.Main
                 return hopdef;
             }
 
-            bool isProfileInChosen = await _dbSanta.Repos.UserChoice.IsProfileInMyChoice(myInfo.UserId, profileInfo.UserId);
-            await profileService.SendProfile(Bot, chatId, profileInfo, true, isProfileInChosen);
+            //bool isProfileInChosen = await _dbSanta.Repos.UserChoice.IsProfileInMyChoice(myInfo.UserId, profileInfo.UserId);
+            await profileService.SendProfile(Bot, chatId, profileInfo, false);
             
             var hop = defaultHop;
             hop.BlockSendAnswer = true;

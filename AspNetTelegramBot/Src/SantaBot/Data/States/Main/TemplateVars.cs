@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Update;
+﻿using MarathonBot;
+using Microsoft.EntityFrameworkCore.Update;
+using Microsoft.VisualBasic;
 using SantaBot.DbModel.Entities;
 using Telegram.Bot.Types.ReplyMarkups;
 using TelegramBotAdditionalTools.Src.Tools;
@@ -7,13 +9,18 @@ namespace SantaBot.Data.States.Search
 {
     public class MainVars
     {
-        public static string Introduction = "Смотри другие письма и выбирай кому сделать подарок 🎅";
+        public static string RulesIntroduction = "Твое письмо отправлено 👌\n\n" +
+                                                 "<b>Теперь ты тоже тайный санта</b>\n" +
+                                                 $"После <b>{AppConstants.StringDate} 2021</b> ты сможешь увидеть кого выбрал для тебя бот.\n" +
+                                                 "А пока читай письма других участников и думай, что ты подаришь своему тайному избраннику.";
+
+        public static string Introduction = "Смотри другие письма 🎅";
         public static string Unexpected = "ЧТО#&!?";
         public static string DeletedFromFavouritesSuccessfully = "Удалено из избранных";
         public static string CancelDelete = "Удаление отменено";
-        public static string NotProfiles = "Никого не найдено ☹️, попробуй изменить параметры поиска";
-        public static string EmptyFavouritesList = "Список избранных пуст ☹\nВыбери письмо и нажми кнопку [Выбрать], чтобы добавить в избранные.";
-        public static string FavouritesList = "Список избранных";
+        public static string NotProfiles = "Никого не найдено ☹️";
+        public static string EmptyFavouritesList = $"Подожди немного, я покажу тебе твоего избранника {AppConstants.StringDate}, а пока читай письма участников.";
+        public static string FavouritesList = "Я выбрал тебе избранника)";
         public static string YourProfileWasAddedToFavourites = "<b>Оповещение</b>\nТвое письмо кто-то добавил в избранное 😘";
         
         public static string BtnSearch = "🎅";
@@ -37,12 +44,13 @@ namespace SantaBot.Data.States.Search
         public static string ConfirmedDeleteInlineDataPrefix = "ConfirmedDeleteProfile";
         public static string CanceledDeleteInlineDataPrefix = "CanceledDeleteProfile";
 
-        public static MarkupWrapper<ReplyKeyboardMarkup> DefaultKeyboardMarkup = new MarkupWrapper<ReplyKeyboardMarkup>()
-            .NewRow()
-            .Add(BtnSearch)
-            .Add(BtnChosen)
-            .Add(BtnEditProfile)
-            .Add(BtnEditSearchParams);
+        public static MarkupWrapper<ReplyKeyboardMarkup> DefaultKeyboardMarkup =
+            new MarkupWrapper<ReplyKeyboardMarkup>()
+                .NewRow()
+                .Add(BtnSearch)
+                .Add(BtnChosen)
+                .Add(BtnEditProfile);
+
 
 
         public static MarkupWrapper<InlineKeyboardMarkup> InlineMarkUpChoseProfile(long userId)

@@ -31,9 +31,11 @@ namespace AspNetTelegramBot
             AppConstants.BotToken = Configuration["Bot:Token"];
             AppConstants.BotWebhook = Configuration["Bot:Webhook"];
             AppConstants.SupportUserId = Configuration["Bot:SupportUserId"];
+            AppConstants.ManagerUserId = Configuration["Bot:ManagerUserId"];
             AppConstants.ShowDate = DateTime.ParseExact(Configuration["Constants:ShowDate"], "dd.MM.yyyy", null);
             AppConstants.MaxBeChosen = int.Parse(Configuration["Constants:MaxBeChosen"]);
             AppConstants.MaxChoice = int.Parse(Configuration["Constants:MaxChoice"]);
+            AppConstants.StringDate = Configuration["Constants:StringDate"];
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.

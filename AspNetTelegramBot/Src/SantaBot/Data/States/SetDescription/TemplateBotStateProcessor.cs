@@ -3,6 +3,7 @@ using AspNetTelegramBot.Src.Bot.Code;
 using MarathonBot.SantaBot.Data.States;
 using MarathonBot.SantaBot.Service;
 using SantaBot.Data.States._TEMPLATE_;
+using SantaBot.Data.States.Search;
 using SantaBot.DbModel.Entities;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -24,9 +25,9 @@ namespace SantaBot.Data.States.SetDescription
             if (mes.Text == SetDescriptionVars.BtnSetCurrent)
             {
                 await SendProfileForConfirmation(ui);
-                Hop hopNext = new Hop(new HopInfo("SetSearchGender", SetSearchGenderVars.Introduction, HopType.CurrentLevelHop), 
+                Hop hopNext = new Hop(new HopInfo("Main", MainVars.RulesIntroduction, HopType.CurrentLevelHop), 
                     CurrentState, 
-                    StateStorage.Get("SetSearchGender"));
+                    StateStorage.Get("Main"));
                 return hopNext;
             }
             
@@ -34,9 +35,9 @@ namespace SantaBot.Data.States.SetDescription
             await _dbSanta.Repos.UserInfo.UpdateAsync(ui);
 
             await SendProfileForConfirmation(ui);
-            var hop = new Hop(new HopInfo("SetSearchGender", SetSearchGenderVars.Introduction, HopType.CurrentLevelHop), 
+            var hop = new Hop(new HopInfo("Main", MainVars.RulesIntroduction, HopType.CurrentLevelHop), 
                 CurrentState, 
-                StateStorage.Get("SetSearchGender"));
+                StateStorage.Get("Main"));
             return hop;
         }
 

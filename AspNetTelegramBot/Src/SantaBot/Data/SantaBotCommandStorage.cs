@@ -14,12 +14,14 @@ namespace MarathonBot.SantaBot.Data
          */
         
         public static string ActivityReport = "/get";
+        public static string DistributeParticipants = "/distributeall";
         public static string SendMe = "/sendme";
         public static string SendAll = "/sendall";
 
         protected override void InitCommands()
         {
             AddStaticCommand(new BotActivityReportCommand(ActivityReport));
+            AddStaticCommand(new BotDistributeCommand(DistributeParticipants));
             AddDynamicCommand(new BotTestSendAllCommand(SendMe));
             AddDynamicCommand(new BotSendAllCommand(SendAll));
         }
