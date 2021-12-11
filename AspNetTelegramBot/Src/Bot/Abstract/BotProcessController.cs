@@ -82,7 +82,7 @@ namespace AspNetTelegramBot.Src.Bot.Abstract
                 UpdateBotModel data = new UpdateBotModel()
                 {
                     bot = this.bot.client,
-                    dbBot = botDbContext,
+                    //dbBot = botDbContext,
                     stateStorage = bot.StateStorage,
                     commandStorage = bot.CommandStorage,
                     state = curState,

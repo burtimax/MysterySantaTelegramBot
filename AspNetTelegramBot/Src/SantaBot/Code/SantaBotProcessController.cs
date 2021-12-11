@@ -9,11 +9,11 @@ namespace MarathonBot.SantaBot.Code
 {
     public class SantaBotProcessController : BotProcessController
     {
-        public SantaBotProcessController(Bot bot) : base(bot)
+        public SantaBotProcessController(AspNetTelegramBot.Src.Bot.Code.Bot bot) : base(bot)
         {
         }
 
-        public SantaBotProcessController(Bot bot, BotContextDbMethods additionalMethods) : base(bot, additionalMethods)
+        public SantaBotProcessController(AspNetTelegramBot.Src.Bot.Code.Bot bot, BotContextDbMethods additionalMethods) : base(bot, additionalMethods)
         {
         }
 

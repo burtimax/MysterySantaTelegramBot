@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AspNetTelegramBot.Src.Bot.Code;
+using AspNetTelegramBot.Src.DbModel.DbBot;
 using Microsoft.EntityFrameworkCore;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
@@ -31,20 +32,24 @@ namespace MarathonBot.SantaBot.Data.Commands
                 await data.bot.SendTextMessageAsync(AppConstants.SupportUserId, "Сообщение пустое");
                 return null;
             }
-            
-            List<long> allUsersChatIdList = await data.dbBot.User.Select(u=>u.Id).ToListAsync();
 
-            foreach (var chatId in allUsersChatIdList)
+            using (BotContext _db = new BotContext())
             {
-                //Обернем, потому что если пользователь удалил бота, выкинет ошибку
-                try
+                List<long> allUsersChatIdList = await _db.User.Select(u=>u.Id).ToListAsync();
+
+                foreach (var chatId in allUsersChatIdList)
                 {
-                    await data.bot.SendTextMessageAsync(chatId, messageToAll, ParseMode.Html);
-                }
-                catch
-                {
+                    //Обернем, потому что если пользователь удалил бота, выкинет ошибку
+                    try
+                    {
+                        await data.bot.SendTextMessageAsync(chatId, messageToAll, ParseMode.Html);
+                    }
+                    catch
+                    {
                     
-                }
+                    }
+            }
+            
                 
             }
             

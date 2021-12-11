@@ -53,17 +53,7 @@ namespace AspNetTelegramBot
             logger.LogInformation("MaxBeChosen - " + AppConstants.MaxBeChosen);
             logger.LogInformation("PhotoPath - " + PhotoHelper.GetPhotoFilePathByUserInfoPhoto("image.jpg"));
 
-            //CreateDatabase and Provide Migrations
-            using (BotContext botContext = new BotContext())
-            {
-                botContext.Database.EnsureCreated();
-            }
-            
-            using (SantaContext santaContext = new SantaContext())
-            {
-                santaContext.Database.MigrateAsync();
-            }
-            //
+           
             
             
             if (env.IsDevelopment())
@@ -81,10 +71,6 @@ namespace AspNetTelegramBot
             {
                 endpoints.MapControllers();
             });
-
-            Bootstrap bootstrap = new Bootstrap();
-            bootstrap.InitChosenByOtherCountForUsers().Wait();
-            logger.LogInformation("Bootstrap init");
 
             var bot = BotSingleton.GetInstanceAsync().Result;
             logger.LogInformation("Bot start");

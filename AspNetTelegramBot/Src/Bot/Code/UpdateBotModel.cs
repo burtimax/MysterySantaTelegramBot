@@ -17,7 +17,7 @@ namespace AspNetTelegramBot.Src.Bot.Code
         public User user { get; set; }
         public Chat chat { get; set; }
         public BotState state { get; set; }
-        public BotContext dbBot { get; set; }
+        //public BotContext dbBot { get; set; }
         public TelegramBotClient bot { get; set; }
         public Update update { get; set; }
         public BotStateStorage stateStorage { get; set; }

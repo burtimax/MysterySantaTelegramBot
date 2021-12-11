@@ -64,23 +64,26 @@ namespace AspNetTelegramBot.Controllers
             return await Task.FromResult<IActionResult>(Ok("TEST PAGE"));
         }
 
-        [HttpGet("db")]
+        [HttpGet("dbinit")]
         public async Task<ActionResult> DbTest()
         {
             _logger.LogInformation($"GET /db - {DateTime.Now.ToString("G")}");
             try
             {
-                using (var db = new BotContext())
-                {
-                    if (await db.Database.CanConnectAsync())
-                    {
-                        return Ok("DB TRUE");
-                    }
-                    else
-                    {
-                        return Ok("DB FALSE");
-                    }
-                }
+                //CreateDatabase and Provide Migrations
+                BotContext botContext = new BotContext();
+                botContext.Database.EnsureCreated();
+                await botContext.DisposeAsync();
+            
+                SantaContext santaContext = new SantaContext();
+                await santaContext.Database.MigrateAsync();
+                await santaContext.DisposeAsync();
+
+                Bootstrap bootstrap = new Bootstrap();
+                bootstrap.InitChosenByOtherCountForUsers().Wait();
+
+                GC.Collect();
+                return Ok("DB INIT");
             }
             catch
             {
@@ -109,8 +112,8 @@ namespace AspNetTelegramBot.Controllers
                 using (var botContext = new BotContext())
                 {
                     await Controller.ProcessUpdate(botContext, bot.client, update);
-                
                 }
+                
             }
 
             //Собираем мусор

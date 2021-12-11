@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AspNetTelegramBot.Src.Bot.Code;
 using AspNetTelegramBot.Src.DbModel.DbBot;
 using BotLibrary.Classes.Helpers;
+using MarathonBot.Bot.Helpers;
 using MarathonBot.SantaBot.Helpers;
 using SantaBot.Data.States.Search;
 using SantaBot.DbModel.Context;
@@ -127,12 +128,16 @@ namespace MarathonBot.SantaBot.Service
         private string GetCaptionForProfile(UserInfo profile, bool showContacts)
         {
             //string sex = profile.IsMale == true ? MainVars : "Ж";
-            StringBuilder sb = new StringBuilder($"🎄 {profile.Name}, {profile.Age}, - {profile.Description}");
+            StringBuilder sb = new StringBuilder();
             if (showContacts)
             {
                 sb.AppendLine($"\nКонтакт : {profile.Contact}");
             }
-            return sb.ToString();
+
+            sb.AppendLine("\n");
+            sb.AppendLine($"🎄 {profile.Name}, {profile.Age}, - {profile.Description}");
+            
+            return BotHelper.CropMediaCaptionAccurate(sb.ToString());
         }
     }
 }
