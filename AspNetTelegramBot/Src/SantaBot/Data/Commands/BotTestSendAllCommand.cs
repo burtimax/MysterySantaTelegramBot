@@ -29,11 +29,11 @@ namespace MarathonBot.SantaBot.Data.Commands
 
             if (string.IsNullOrWhiteSpace(messageToAll) == true)
             {
-                await data.bot.SendTextMessageAsync(AppConstants.SupportUserId, "Сообщение пустое");
+                await data.bot.SendTextMessageAsync(data.chat.Id, "Сообщение пустое");
                 return null;
             }
             
-            await data.bot.SendTextMessageAsync(AppConstants.SupportUserId, messageToAll, ParseMode.Html);
+            await data.bot.SendTextMessageAsync(data.chat.Id, messageToAll, ParseMode.Html);
             
             return null;
         }

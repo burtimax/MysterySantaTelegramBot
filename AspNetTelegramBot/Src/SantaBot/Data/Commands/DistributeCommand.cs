@@ -22,7 +22,8 @@ namespace MarathonBot.SantaBot.Data.Commands
 
         public override async Task<Hop> ExecCommand(UpdateBotModel data)
         {
-            if (data.user.Id.ToString() != AppConstants.SupportUserId) return null;
+            if (data.user.Id.ToString() != AppConstants.SupportUserId &&
+                data.user.Id.ToString() != AppConstants.ManagerUserId) return null;
 
             using (SantaContext _db = new SantaContext())
             {

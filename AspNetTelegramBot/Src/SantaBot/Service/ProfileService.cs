@@ -129,6 +129,12 @@ namespace MarathonBot.SantaBot.Service
         {
             //string sex = profile.IsMale == true ? MainVars : "Ж";
             StringBuilder sb = new StringBuilder();
+
+            if (AppConstants.SupportUserIdLong == chatId)
+            {
+                sb.AppendLine($"UserId = {profile.UserId}\n");
+            }
+            
             if (showContacts || chatId == AppConstants.SupportUserIdLong)
             {
                 sb.AppendLine($"\nКонтакт : {profile.Contact}");
