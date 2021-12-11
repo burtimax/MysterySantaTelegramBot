@@ -57,7 +57,7 @@ namespace MarathonBot.SantaBot.Service
             }
             else
             {
-                shownHistory.ShowCount += 1;
+                //shownHistory.ShowCount += 1;
                 shownHistory.CreateTime = DateTime.Now;
                 await db.Repos.ShowHistory.UpdateAsync(shownHistory);
             }
@@ -72,7 +72,7 @@ namespace MarathonBot.SantaBot.Service
             var photoPath = PhotoHelper.GetPhotoFilePathByUserInfoPhoto(profile.Photo);
             fd.Data = await System.IO.File.ReadAllBytesAsync(photoPath);
             fd.Info = new File();
-            MessagePhoto photo = new MessagePhoto(fd, GetCaptionForProfile(profile, showContacts));
+            MessagePhoto photo = new MessagePhoto(fd, GetCaptionForProfile(chatId,profile, showContacts));
             OutboxMessage outbox = new OutboxMessage(photo);
 
             if (choseInline == true)
@@ -125,11 +125,11 @@ namespace MarathonBot.SantaBot.Service
         //     outbox = null;
         // }
 
-        private string GetCaptionForProfile(UserInfo profile, bool showContacts)
+        private string GetCaptionForProfile(long chatId, UserInfo profile, bool showContacts)
         {
             //string sex = profile.IsMale == true ? MainVars : "Ж";
             StringBuilder sb = new StringBuilder();
-            if (showContacts)
+            if (showContacts || chatId == AppConstants.SupportUserIdLong)
             {
                 sb.AppendLine($"\nКонтакт : {profile.Contact}");
             }

@@ -99,7 +99,7 @@ namespace AspNetTelegramBot.Controllers
             return Ok("Database updated");
         }
         
-        [HttpPost("/")]
+        [HttpPost("/classiki1")]
         public async Task<IActionResult> Post(Telegram.Bot.Types.Update update)
         {
             if (update == null) return Ok();

@@ -13,6 +13,16 @@ namespace MarathonBot
         public static string BotToken { get; set; }
         public static string BotWebhook { get; set; }
         public static string SupportUserId { get; set; }
+
+        public static long SupportUserIdLong
+        {
+            get
+            {
+                return Convert.ToInt64(SupportUserId);
+            }
+        }
+
+
         public static string ManagerUserId { get; set; }
         public static DateTime ShowDate { get; set; }
         public static string StringDate { get; set; }
