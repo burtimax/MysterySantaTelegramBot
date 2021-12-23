@@ -16,5 +16,6 @@ namespace MarathonBot
         public static DateTime ShowDate { get; set; }
         public static int MaxBeChosen { get; set; }
         public static int MaxChoice { get; set; }
+        public static int HideShowCount = 1000000;
     }
 }

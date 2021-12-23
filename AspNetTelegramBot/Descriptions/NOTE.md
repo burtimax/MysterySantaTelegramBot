@@ -18,7 +18,7 @@ REMOVE MIGRATIONS
 ~~~
 ADD MIGRATIONS
 1) cd AspNetTelegramBot
-2) dotnet ef migrations add Add_ChosenByOtherCount_Field --context SantaContext -p ../AspNetTelegramBot/SantaBot.csproj -s SantaBot.csproj -o Src/SantaBot/Db/MigrationsData
+2) dotnet ef migrations add AddInvisibleField --context SantaContext -p ../AspNetTelegramBot/SantaBot.csproj -s SantaBot.csproj -o Src/SantaBot/Db/MigrationsData
 3) dotnet ef database update --context SantaContext
 
 REMOVE MIGRATIONS

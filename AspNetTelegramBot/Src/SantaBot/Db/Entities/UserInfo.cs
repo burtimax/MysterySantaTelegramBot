@@ -13,6 +13,7 @@ namespace SantaBot.DbModel.Entities
         public string Name { get; set; }
         public int Age { get; set; }
         public bool IsMale { get; set; }
+        public bool Invisible { get; set; }
         public string Photo { get; set; }
         
         public int ChosenByOthersCount { get; set; }

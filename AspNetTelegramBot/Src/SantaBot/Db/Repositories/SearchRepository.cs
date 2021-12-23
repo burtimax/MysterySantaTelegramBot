@@ -38,6 +38,7 @@ namespace SantaBot.Db.Repositories
                         ShowCount = _db.ShowHistory.Where(s=>s.ShownUserId == ui.UserId && s.UserId == paramsSearch.UserId).Select(s=>s.ShowCount).FirstOrDefault(),
                         Rand = ui.RandomNumber,
                     }).Where(item =>
+                    (item.UserInfo.Invisible == false) && 
                     (item.UserInfo.ChosenByOthersCount < AppConstants.MaxBeChosen) &&
                     (item.UserInfo.Photo != null) &&
                     (item.UserInfo.UserId != paramsSearch.UserId) &&
@@ -52,11 +53,11 @@ namespace SantaBot.Db.Repositories
             var profile = profiles.FirstOrDefault();
             if (profile == null && shown == true)
             {
-                var another = await _db.UsersInfo.Where(ui => ui.IsMale == isMale)
+                var another = await _db.UsersInfo.Where(ui => ui.IsMale == isMale && ui.Invisible == false)
                     .OrderBy(ui => ui.RandomNumber - num).FirstOrDefaultAsync();
                 if (another == null)
                 {
-                    return await _db.UsersInfo.FirstOrDefaultAsync();
+                    return await _db.UsersInfo.FirstOrDefaultAsync(u=>u.Invisible == false);
                 }
             }
             

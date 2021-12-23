@@ -101,6 +101,9 @@ namespace MarathonBot.Src.SantaBot.Db.MigrationsData
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
+                    b.Property<bool>("Invisible")
+                        .HasColumnType("boolean");
+
                     b.Property<bool>("IsMale")
                         .HasColumnType("boolean");
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AspNetTelegramBot.Src.Bot.Code;
@@ -6,6 +7,7 @@ using AspNetTelegramBot.Src.DbModel.DbBot;
 using BotLibrary.Classes.Helpers;
 using MarathonBot.Bot.Helpers;
 using MarathonBot.SantaBot.Helpers;
+using Microsoft.EntityFrameworkCore;
 using SantaBot.Data.States.Search;
 using SantaBot.DbModel.Context;
 using SantaBot.DbModel.Entities;
@@ -16,6 +18,7 @@ using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using TelegramBotAdditionalTools.Src.MessageData;
 using TelegramBotAdditionalTools.Src.Tools;
+using User = Telegram.Bot.Types.User;
 
 namespace MarathonBot.SantaBot.Service
 {
@@ -72,7 +75,7 @@ namespace MarathonBot.SantaBot.Service
             var photoPath = PhotoHelper.GetPhotoFilePathByUserInfoPhoto(profile.Photo);
             fd.Data = await System.IO.File.ReadAllBytesAsync(photoPath);
             fd.Info = new File();
-            MessagePhoto photo = new MessagePhoto(fd, GetCaptionForProfile(profile, showContacts));
+            MessagePhoto photo = new MessagePhoto(fd, GetCaptionForProfile(chatId, profile, showContacts));
             OutboxMessage outbox = new OutboxMessage(photo);
 
             if (choseInline == true)
@@ -125,10 +128,19 @@ namespace MarathonBot.SantaBot.Service
         //     outbox = null;
         // }
 
-        private string GetCaptionForProfile(UserInfo profile, bool showContacts)
+        private string GetCaptionForProfile(long chatId, UserInfo profile, bool showContacts)
         {
             //string sex = profile.IsMale == true ? MainVars : "Ж";
             StringBuilder sb = new StringBuilder();
+
+            if (chatId.ToString() == AppConstants.SupportUserId.ToString())
+            {
+               
+                sb.AppendLine($"UserId = {profile.UserId}");
+                sb.AppendLine($"Contact = {profile.Contact}");
+            }
+            
+            
             if (showContacts)
             {
                 sb.AppendLine($"\nКонтакт : {profile.Contact}");
